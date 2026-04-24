@@ -1,33 +1,108 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { Routes, Route, Navigate } from "react-router-dom"
+import Login from "./pages/Login"
+import Products from "./pages/Products"
+import Cart from "./pages/Cart"
+import Profile from "./pages/Profile"
+import Checkout from "./pages/Checkout"
+import OrderSuccess from "./pages/OrderSuccess"
+import ProtectedRoute from "./ProtectedRoute"
+import Navbar from "./components/Navbar"
+
+// ⭐ CLEAN HOME PAGE (NO PRODUCTS INSIDE)
+function Home() {
+  return (
+    <div className="min-h-screen bg-gray-900 text-white flex flex-col items-center justify-center text-center px-6">
+
+      <h1 className="text-4xl font-bold mb-4">
+        Welcome to KerryShop 🛍️
+      </h1>
+
+      <p className="text-gray-300 mb-6">
+        Your premium online shopping experience
+      </p>
+
+      <p className="text-sm text-gray-400">
+        Go to Products to start shopping
+      </p>
+
+    </div>
+  )
+}
 
 function App() {
-  const [count, setCount] = useState(0)
-
   return (
     <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
+      {/* NAVBAR ALWAYS VISIBLE */}
+      <Navbar />
+
+      <Routes>
+
+        {/* PUBLIC ROUTES */}
+        <Route path="/login" element={<Login />} />
+
+        {/* REDIRECT ROOT */}
+        <Route path="/" element={<Navigate to="/home" />} />
+
+        {/* PROTECTED ROUTES */}
+        <Route
+          path="/home"
+          element={
+            <ProtectedRoute>
+              <Home />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/products"
+          element={
+            <ProtectedRoute>
+              <Products />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/cart"
+          element={
+            <ProtectedRoute>
+              <Cart />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/profile"
+          element={
+            <ProtectedRoute>
+              <Profile />
+            </ProtectedRoute>
+          }
+        />
+
+        {/* ⭐ STEP 10 — CHECKOUT FLOW */}
+        <Route
+          path="/checkout"
+          element={
+            <ProtectedRoute>
+              <Checkout />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/order-success"
+          element={
+            <ProtectedRoute>
+              <OrderSuccess />
+            </ProtectedRoute>
+          }
+        />
+
+        {/* FALLBACK */}
+        <Route path="*" element={<Navigate to="/home" />} />
+
+      </Routes>
     </>
   )
 }
