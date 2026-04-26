@@ -1,29 +1,22 @@
-import logo from "../assets/kerryshop-logo.png"
 function Home() {
   return (
-    <div className="min-h-screen bg-gray-900 text-white flex flex-col items-center justify-center text-center px-6">
+    <div>
+      <h1 style={{ color: "red" }}>THIS IS HOME FILE</h1>
 
-      {/* ⭐ LOGO ADDED */}
       <img
-        src={logo}
-        alt="KerryShop Logo"
-        className="w-72 mb-6 drop-shadow-xl"
+        src="/kerryshop-logo.png"
+        alt="logo"
+        style={{
+          position: "fixed",
+          top: "10px",
+          left: "10px",
+          width: "100px",
+          border: "5px solid red",
+          zIndex: 9999
+        }}
       />
-
-      <h1 className="text-4xl font-bold mb-4">
-        Welcome to KerryShop 🛍️
-      </h1>
-
-      <p className="text-gray-300 mb-6">
-        Your premium online shopping experience
-      </p>
-
-      <p className="text-sm text-gray-400">
-        Go to Products to start shopping
-      </p>
-
     </div>
-  )
+  );
 }
 
-export default Home
+export default Home;

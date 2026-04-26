@@ -1,49 +1,58 @@
-import { Routes, Route, Navigate } from "react-router-dom"
-import Login from "./pages/Login"
-import Products from "./pages/Products"
-import Cart from "./pages/Cart"
-import Profile from "./pages/Profile"
-import Checkout from "./pages/Checkout"
-import OrderSuccess from "./pages/OrderSuccess"
-import ProtectedRoute from "./ProtectedRoute"
-import Navbar from "./components/Navbar"
+import { Routes, Route, Navigate } from "react-router-dom";
+import Login from "./pages/Login";
+import Products from "./pages/Products";
+import Cart from "./pages/Cart";
+import Profile from "./pages/Profile";
+import Checkout from "./pages/Checkout";
+import OrderSuccess from "./pages/OrderSuccess";
+import ProtectedRoute from "./ProtectedRoute";
+import Navbar from "./components/Navbar";
 
-// ⭐ CLEAN HOME PAGE (NO PRODUCTS INSIDE)
+// ⭐ HOME PAGE (keep here OR move later to pages/Home.jsx)
 function Home() {
   return (
-    <div className="min-h-screen bg-gray-900 text-white flex flex-col items-center justify-center text-center px-6">
+    <div className="min-h-screen bg-gray-900 text-white px-6">
 
-      <h1 className="text-4xl font-bold mb-4">
-        Welcome to KerryShop 🛍️
-      </h1>
+      {/* LOGO */}
+      <div className="flex justify-start pt-6">
+        <img
+          src="/kerryshop-logo.png"
+          alt="KerryShop Logo"
+          className="w-40"
+        />
+      </div>
 
-      <p className="text-gray-300 mb-6">
-        Your premium online shopping experience
-      </p>
+      {/* CONTENT */}
+      <div className="flex flex-col items-center justify-center min-h-[80vh] text-center">
 
-      <p className="text-sm text-gray-400">
-        Go to Products to start shopping
-      </p>
+        <h1 className="text-4xl font-bold mb-4">
+          Welcome to KerryShop 🛍️
+        </h1>
+
+        <p className="text-gray-300 mb-6">
+          Your premium online shopping experience
+        </p>
+
+        <p className="text-sm text-gray-400">
+          Go to Products to start shopping
+        </p>
+
+      </div>
 
     </div>
-  )
+  );
 }
 
 function App() {
   return (
     <>
-      {/* NAVBAR ALWAYS VISIBLE */}
       <Navbar />
 
       <Routes>
-
-        {/* PUBLIC ROUTES */}
         <Route path="/login" element={<Login />} />
 
-        {/* REDIRECT ROOT */}
         <Route path="/" element={<Navigate to="/home" />} />
 
-        {/* PROTECTED ROUTES */}
         <Route
           path="/home"
           element={
@@ -80,7 +89,6 @@ function App() {
           }
         />
 
-        {/* ⭐ STEP 10 — CHECKOUT FLOW */}
         <Route
           path="/checkout"
           element={
@@ -99,12 +107,10 @@ function App() {
           }
         />
 
-        {/* FALLBACK */}
         <Route path="*" element={<Navigate to="/home" />} />
-
       </Routes>
     </>
-  )
+  );
 }
 
-export default App
+export default App;
