@@ -1,92 +1,78 @@
-import { useEffect, useState } from "react"
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { ArrowLeft } from "lucide-react";
+import BottomNav from "../components/BottomNav";
 
 function Products() {
-
-  const [products, setProducts] = useState([])
+  const [products, setProducts] = useState([]);
+  const navigate = useNavigate();
 
   useEffect(() => {
     fetch("http://127.0.0.1:5000/products")
-      .then(res => res.json())
-      .then(data => setProducts(data))
-  }, [])
+      .then((res) => res.json())
+      .then((data) => setProducts(data))
+      .catch((err) => console.error("Failed to load products", err));
+  }, []);
 
-  // ⭐ STEP 8.1 — SMART ADD TO CART (NO DUPLICATES + QUANTITY SUPPORT)
   const addToCart = (product) => {
-
-    const cart = JSON.parse(localStorage.getItem("cart")) || []
-
-    // 🔥 check if product already exists
-    const existing = cart.find(item => item.id === product.id)
-
+    const cart = JSON.parse(localStorage.getItem("cart")) || [];
+    const existing = cart.find((item) => item.id === product.id);
     if (existing) {
-      // increase quantity instead of duplicating
-      existing.quantity += 1
+      existing.quantity += 1;
     } else {
-      // add new product with quantity = 1
-      cart.push({
-        ...product,
-        quantity: 1
-      })
+      cart.push({ ...product, quantity: 1 });
     }
-
-    localStorage.setItem("cart", JSON.stringify(cart))
-
-    // notify navbar instantly
-    window.dispatchEvent(new Event("cartUpdated"))
-  }
+    localStorage.setItem("cart", JSON.stringify(cart));
+    window.dispatchEvent(new Event("cartUpdated"));
+  };
 
   return (
-    <div className="p-6">
+    <div className="min-h-screen bg-gray-50 pb-24">
 
-      <h2 className="text-2xl font-bold mb-6">
-        Products 🛍️
-      </h2>
+      {/* HEADER */}
+      <div className="bg-white shadow-sm px-4 py-4 flex items-center gap-3 sticky top-0 z-40">
+        <button
+          onClick={() => navigate(-1)}
+          className="bg-gray-100 hover:bg-gray-200 p-2 rounded-full transition"
+        >
+          <ArrowLeft size={20} className="text-gray-700" />
+        </button>
+        <h1 className="text-lg font-bold text-gray-800">Products</h1>
+      </div>
 
-      {/* ⭐ GRID LAYOUT (AMAZON STYLE) */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-
-        {products.map(product => (
-
+      {/* GRID */}
+      <div className="p-4 grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+        {products.map((product) => (
           <div
             key={product.id}
-            className="bg-white shadow-md rounded-lg overflow-hidden hover:shadow-xl transition"
+            className="bg-white shadow-sm rounded-2xl overflow-hidden hover:shadow-md transition"
           >
-
-            {/* ⭐ IMAGE (KEPT SMALL AS YOU WANTED) */}
             <img
               src={product.image}
               alt={product.name}
               className="w-full h-32 object-cover"
             />
-
-            {/* PRODUCT INFO */}
             <div className="p-3">
-
-              <h3 className="font-semibold text-md">
+              <h3 className="font-semibold text-sm text-gray-800 truncate">
                 {product.name}
               </h3>
-
-              <p className="text-blue-600 font-bold">
+              <p className="text-green-600 font-bold text-sm mt-1">
                 Ksh {product.price}
               </p>
-
               <button
                 onClick={() => addToCart(product)}
-                className="mt-2 w-full bg-blue-600 text-white py-1 rounded hover:bg-blue-700 transition"
+                className="mt-2 w-full bg-green-600 hover:bg-green-700 text-white text-xs font-semibold py-2 rounded-full transition"
               >
                 Add to Cart
               </button>
-
             </div>
-
           </div>
-
         ))}
-
       </div>
 
+      <BottomNav />
     </div>
-  )
+  );
 }
 
-export default Products
+export default Products;

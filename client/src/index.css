@@ -2,11 +2,10 @@
 @tailwind components;
 @tailwind utilities;
 
-/* ⭐ Hide scrollbar for category slider */
+/* hide scrollbar */
 .scrollbar-hide::-webkit-scrollbar {
   display: none;
 }
-
 .scrollbar-hide {
   scrollbar-width: none;
 }

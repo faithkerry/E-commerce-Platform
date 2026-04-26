@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react"
 import { useNavigate } from "react-router-dom"
+import { ArrowLeft } from "lucide-react"
 
 function Checkout() {
 
@@ -18,7 +19,6 @@ function Checkout() {
   )
 
   const handlePlaceOrder = () => {
-
     const order = {
       id: Date.now(),
       items: cart,
@@ -26,77 +26,114 @@ function Checkout() {
       delivery,
       date: new Date().toLocaleString()
     }
-
-    // save order
     localStorage.setItem("lastOrder", JSON.stringify(order))
-
-    // clear cart
     localStorage.setItem("cart", JSON.stringify([]))
     window.dispatchEvent(new Event("cartUpdated"))
-
-    // go to success page
     navigate("/order-success")
   }
 
   return (
-    <div className="p-6 min-h-screen bg-gray-100">
+    <div className="min-h-screen bg-gray-50 pb-24">
 
-      <h1 className="text-3xl font-bold mb-6">
-        Checkout 🧾
-      </h1>
+      {/* HEADER WITH BACK ARROW */}
+      <div className="bg-white shadow-sm px-4 py-4 flex items-center gap-3 sticky top-0 z-40">
+        <button
+          onClick={() => navigate(-1)}
+          className="bg-gray-100 hover:bg-gray-200 p-2 rounded-full transition"
+        >
+          <ArrowLeft size={20} className="text-gray-700" />
+        </button>
+        <h1 className="text-lg font-bold text-gray-800">Checkout 🧾</h1>
+      </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+      <div className="p-6 grid grid-cols-1 lg:grid-cols-3 gap-6">
 
-        {/* LEFT */}
-        <div className="lg:col-span-2 bg-white p-4 rounded shadow">
+        {/* LEFT — ORDER ITEMS */}
+        <div className="lg:col-span-2 bg-white p-6 rounded-2xl shadow-sm">
 
-          <h2 className="font-bold mb-4">Order Items</h2>
+          <h2 className="font-bold text-gray-800 mb-4 text-lg">
+            Order Items
+          </h2>
 
           {cart.map(item => (
-            <div key={item.id} className="flex justify-between mb-2">
-              <p>{item.name} x {item.quantity || 1}</p>
-              <p>Ksh {item.price * (item.quantity || 1)}</p>
+            <div
+              key={item.id}
+              className="flex justify-between items-center py-3 border-b last:border-0"
+            >
+              <div className="flex items-center gap-3">
+                <img
+                  src={item.image}
+                  alt={item.name}
+                  className="w-12 h-12 object-cover rounded-lg"
+                />
+                <div>
+                  <p className="font-semibold text-sm text-gray-800">
+                    {item.name}
+                  </p>
+                  <p className="text-xs text-gray-400">
+                    Qty: {item.quantity || 1}
+                  </p>
+                </div>
+              </div>
+              <p className="font-bold text-green-600">
+                Ksh {(item.price * (item.quantity || 1)).toLocaleString()}
+              </p>
             </div>
           ))}
 
         </div>
 
-        {/* RIGHT */}
-        <div className="bg-white p-4 rounded shadow">
+        {/* RIGHT — SUMMARY */}
+        <div className="bg-white p-6 rounded-2xl shadow-sm h-fit">
 
-          <h2 className="font-bold mb-4">Summary</h2>
+          <h2 className="font-bold text-gray-800 mb-4 text-lg">
+            Summary
+          </h2>
 
-          <p className="mb-2">Total: Ksh {total}</p>
+          <p className="text-gray-600 mb-1">
+            Items: {cart.length}
+          </p>
+
+          <p className="text-xl font-bold text-green-700 mb-4">
+            Total: Ksh {total.toLocaleString()}
+          </p>
 
           {/* DELIVERY */}
-          <select
-            value={delivery}
-            onChange={(e) => setDelivery(e.target.value)}
-            className="w-full border p-2 mb-4 rounded"
-          >
-            <option value="standard">Standard Delivery</option>
-            <option value="express">Express Delivery</option>
-            <option value="pickup">Pickup Station</option>
-          </select>
-
-          {/* PAYMENT (UI ONLY) */}
           <div className="mb-4">
-            <p className="font-semibold mb-2">Payment Method</p>
+            <p className="font-semibold text-gray-700 mb-2">
+              Delivery Options
+            </p>
+            <select
+              value={delivery}
+              onChange={(e) => setDelivery(e.target.value)}
+              className="w-full border border-gray-200 p-3 mb-4 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-green-400"
+            >
+              <option value="standard">Standard Delivery (2-3 days)</option>
+              <option value="express">Express Delivery (Same day)</option>
+              <option value="pickup">Pickup Station</option>
+            </select>
+          </div>
 
-            <label className="block">
+          {/* PAYMENT METHOD */}
+          <div className="mb-6">
+            <p className="font-semibold text-gray-700 mb-3">
+              Payment Method
+            </p>
+
+            <label className="flex items-center gap-3 p-3 border border-gray-200 rounded-xl mb-2 cursor-pointer hover:bg-gray-50">
               <input type="radio" name="pay" defaultChecked />
-              {" "}M-Pesa
+              <span className="text-sm font-medium">📱 M-Pesa</span>
             </label>
 
-            <label className="block">
+            <label className="flex items-center gap-3 p-3 border border-gray-200 rounded-xl cursor-pointer hover:bg-gray-50">
               <input type="radio" name="pay" />
-              {" "}Card Payment
+              <span className="text-sm font-medium">💳 Card Payment</span>
             </label>
           </div>
 
           <button
             onClick={handlePlaceOrder}
-            className="w-full bg-green-600 text-white py-2 rounded"
+            className="w-full bg-green-600 hover:bg-green-700 text-white py-3 rounded-xl font-semibold transition"
           >
             Place Order
           </button>
