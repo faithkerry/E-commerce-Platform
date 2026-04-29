@@ -1,21 +1,21 @@
-import { Link, useLocation } from "react-router-dom";
-import { Home, Grid, ShoppingCart, Heart, User } from "lucide-react";
+import { Link, useLocation } from "react-router-dom"
+import { Home, Grid, ShoppingCart, Heart, User } from "lucide-react"
 
 function BottomNav() {
-  const location = useLocation();
+  const location = useLocation()
 
   const links = [
     { to: "/home", icon: Home, label: "Home" },
-    { to: "/products", icon: Grid, label: "Categories" },
+    { to: "/categories", icon: Grid, label: "Categories" },
     { to: "/cart", icon: ShoppingCart, label: "Cart" },
     { to: "/wishlist", icon: Heart, label: "Wishlist" },
     { to: "/account", icon: User, label: "Account" },
-  ];
+  ]
 
   return (
-    <div className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 flex justify-around py-2 z-50">
+    <div className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 flex justify-around py-2 z-30">
       {links.map(({ to, icon: Icon, label }) => {
-        const active = location.pathname === to;
+        const active = location.pathname === to
         return (
           <Link
             key={to}
@@ -25,10 +25,10 @@ function BottomNav() {
             <Icon size={22} />
             <span className="text-xs">{label}</span>
           </Link>
-        );
+        )
       })}
     </div>
-  );
+  )
 }
 
-export default BottomNav;
+export default BottomNav

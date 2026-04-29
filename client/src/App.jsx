@@ -11,6 +11,7 @@ import Account from "./pages/Account";
 import ProtectedRoute from "./ProtectedRoute";
 import Navbar from "./components/Navbar";
 import Wishlist from "./pages/Wishlist"
+import Categories from "./pages/Categories"
 
 
 function App() {
@@ -31,7 +32,7 @@ function App() {
         <Route path="/account" element={<ProtectedRoute><Account /></ProtectedRoute>} />
         <Route path="/checkout" element={<ProtectedRoute><Checkout /></ProtectedRoute>} />
         <Route path="/order-success" element={<ProtectedRoute><OrderSuccess /></ProtectedRoute>} />
-
+        <Route path="/categories" element={<ProtectedRoute><Categories /></ProtectedRoute>} />
         <Route path="*" element={<Navigate to="/home" />} />
       </Routes>
     </>
